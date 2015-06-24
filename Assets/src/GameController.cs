@@ -4,42 +4,57 @@ using System.Collections;
 public class GameController : MonoBehaviour {
 
 	public Camera playerCamera;
-	public Camera overHeadCamera;
+	public Camera mainCamera;
 	public int cameraThrust;
 	public int playing;
 	public int turn;
 
+	float rotationX;
+	float rotationY;
 
-
-
-
-	void Awake()
+	void Start()
 	{
 		playing = 0;
+
+		rotationX = 225f;//playerCamera.transform.localRotation.x;//- Input.GetAxis("Mouse X");;
+		rotationY = 5f;//playerCamera.transform.localRotation.y;//- Input.GetAxis("Mouse Y");;
+
+		//Swap camera
+		mainCamera.enabled = false;
+		playerCamera.enabled = true;
+
 	}
 
 	void FixedUpdate()
 	{
+		mainCamera.enabled = false;
+		playerCamera.enabled = true;
+
 		if (Input.GetMouseButton (1)) {
-			float hAxis = Input.GetAxis ("Horizontal");
-			float vAxis = Input.GetAxis ("Vertical");
 
-			float rotationX = playerCamera.transform.localEulerAngles.y + Input.GetAxis("Mouse X");
-			float rotationY = playerCamera.transform.localEulerAngles.x + Input.GetAxis("Mouse Y");
+			Rotate();
+			Move();
 
-			//Swap camera
-			overHeadCamera.enabled = false;
-			playerCamera.enabled = true;
-
-			playerCamera.transform.position += new Vector3 (hAxis, 0, vAxis);// * cameraThrust;
-			playerCamera.transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
-
-
-		} else {
-			//Swap camera back
-			overHeadCamera.enabled = true;
+		} else if (Input.GetMouseButton (2))  {
+			mainCamera.enabled = true;
 			playerCamera.enabled = false;
-
 		}
+	}
+
+	void Move() {
+		Vector3 forward = playerCamera.transform.forward * Input.GetAxis("Vertical");
+		Vector3 right = playerCamera.transform.right * Input.GetAxis("Horizontal");
+
+		playerCamera.transform.position += forward * cameraThrust;
+		playerCamera.transform.position += right * cameraThrust;
+	}
+
+	void Rotate() {
+		rotationX += Input.GetAxis("Mouse X");
+		rotationY += Input.GetAxis("Mouse Y");
+		rotationY = Mathf.Clamp (rotationY, -90, 90);
+		
+		playerCamera.transform.localRotation = Quaternion.AngleAxis(rotationX, Vector3.up);
+		playerCamera.transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);
 	}
 }
