@@ -5,17 +5,13 @@ public class GameController : MonoBehaviour {
 
 	public Camera playerCamera;
 	public Camera mainCamera;
-	public int cameraThrust;
-	public int playing;
-	public int turn;
+	public int cameraThrust = 1;
 
 	float rotationX;
 	float rotationY;
 
 	void Start()
 	{
-		playing = 0;
-
 		rotationX = 225f;
 		rotationY = 5f;
 
