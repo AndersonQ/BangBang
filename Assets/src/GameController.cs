@@ -16,8 +16,8 @@ public class GameController : MonoBehaviour {
 	{
 		playing = 0;
 
-		rotationX = 225f;//playerCamera.transform.localRotation.x;//- Input.GetAxis("Mouse X");;
-		rotationY = 5f;//playerCamera.transform.localRotation.y;//- Input.GetAxis("Mouse Y");;
+		rotationX = 225f;
+		rotationY = 5f;
 
 		//Swap camera
 		mainCamera.enabled = false;
