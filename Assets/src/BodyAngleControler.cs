@@ -2,22 +2,34 @@
 using System.Collections;
 
 public class BodyAngleControler : MonoBehaviour {
-
-	BodyAngleControler PlayerBody;
-
-	// Use this for initialization
-	void Start () {
-		PlayerBody = this;
-	}
-
+	public GameObject projectilePrefab;
+	public GameObject cannon;
+	private float magnitude;
+	
 	void FixedUpdate()
 	{
 		float moveHorizontal = Input.GetAxis ("Horizontal");
-		PlayerBody.transform.eulerAngles += new Vector3 (0.0f, moveHorizontal, 0.0f);
+		float moveVertical = Input.GetAxis ("Vertical");
+
+		this.transform.eulerAngles += new Vector3 (0.0f, moveHorizontal, 0.0f);
+		cannon.transform.eulerAngles -= new Vector3 (moveVertical, 0.0f, 0.0f);
+
+		if (Input.GetKeyDown("space"))
+			magnitude = Time.time;
+		
+		if (Input.GetKeyUp("space")) {
+			magnitude = Time.time - magnitude;
+			Fire(magnitude*5);
+		}
 	}
 
-	// Update is called once per frame
-	void Update () {
-	
+	void Fire(float mod)
+	{
+		GameObject projectile = (GameObject)Instantiate(projectilePrefab,
+		                                                transform.position + cannon.transform.TransformVector (new Vector3(0.0f,1.0f,0.0f)),
+		                                                Quaternion.LookRotation(cannon.transform.forward));
+		
+		Rigidbody projectileRb = projectile.GetComponent<Rigidbody> ();
+		projectileRb.velocity = cannon.transform.TransformVector(new Vector3(0.0f, mod, 0.0f));
 	}
 }
