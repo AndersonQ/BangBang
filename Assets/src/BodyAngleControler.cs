@@ -8,18 +8,21 @@ public class BodyAngleControler : MonoBehaviour {
 	
 	void FixedUpdate()
 	{
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		float moveVertical = Input.GetAxis ("Vertical");
+		if (!Input.GetMouseButton (1) && !Input.GetMouseButton (2))
+		{
+			float moveHorizontal = Input.GetAxis ("Horizontal");
+			float moveVertical = Input.GetAxis ("Vertical");
 
-		this.transform.eulerAngles += new Vector3 (0.0f, moveHorizontal, 0.0f);
-		cannon.transform.eulerAngles -= new Vector3 (moveVertical, 0.0f, 0.0f);
+			this.transform.eulerAngles += new Vector3 (0.0f, moveHorizontal, 0.0f);
+			cannon.transform.eulerAngles -= new Vector3 (moveVertical, 0.0f, 0.0f);
 
-		if (Input.GetKeyDown("space"))
-			magnitude = Time.time;
-		
-		if (Input.GetKeyUp("space")) {
-			magnitude = Time.time - magnitude;
-			Fire(magnitude*5);
+			if (Input.GetKeyDown("space"))
+				magnitude = Time.time;
+			
+			if (Input.GetKeyUp("space")) {
+				magnitude = Time.time - magnitude;
+				Fire(magnitude*5);
+			}
 		}
 	}
 
