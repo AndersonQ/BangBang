@@ -13,7 +13,6 @@ public class GameController : MonoBehaviour {
 
 	public string currentPlayerTag;
 
-
 	Vector3 p1CameraPos;
 	Vector3 p2CameraPos;
 	Quaternion p1CameraRot;
@@ -99,7 +98,7 @@ public class GameController : MonoBehaviour {
 		firstPersonCamera.transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);
 	}
 
-	void swapPlayers()
+	public void swapPlayers()
 	{
 		if (player1.CompareTag(currentPlayerTag)) {
 			p1CameraPos = firstPersonCamera.transform.position;
@@ -118,6 +117,7 @@ public class GameController : MonoBehaviour {
             rotationY = p2RotationY;
 
 			currentPlayerTag = player2.tag;
+            player2.GetComponent<BodyAngleControler>().shot = false;
 		} else {
 			p2CameraPos = firstPersonCamera.transform.position;
 			p2CameraRot = firstPersonCamera.transform.rotation;
@@ -135,6 +135,12 @@ public class GameController : MonoBehaviour {
             rotationY = p1RotationY;
 			
 			currentPlayerTag = player1.tag;
+            player1.GetComponent<BodyAngleControler>().shot = false;
 		}
 	}
+
+    public void ShotHit(GameObject hit)
+    {
+        Debug.Log("Hit: " + hit.name + " - " + hit.tag);
+    }
 }
