@@ -4,11 +4,22 @@ using System.Collections;
 public class BodyAngleControler : MonoBehaviour {
 	public GameObject projectilePrefab;
 	public GameObject cannon;
+
+	private GameObject gameController;
+	private GameController gameControllerScript;
 	private float magnitude;
-	
+
+	void Awake()
+	{
+		gameController = GameObject.Find("GameController");
+		gameControllerScript = gameController.GetComponent<GameController>();
+	}
+
 	void FixedUpdate()
 	{
-		if (!Input.GetMouseButton (1) && !Input.GetMouseButton (2))
+		if (!Input.GetMouseButton (1) && 
+		    !Input.GetMouseButton (2) &&
+		    this.CompareTag(gameControllerScript.currentPlayerTag))
 		{
 			float moveHorizontal = Input.GetAxis ("Horizontal");
 			float moveVertical = Input.GetAxis ("Vertical");
