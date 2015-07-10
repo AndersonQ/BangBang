@@ -5,8 +5,8 @@ public class GameController : MonoBehaviour {
 
 	public Camera firstPersonCamera;
 	public Camera mainCamera;
-    public Camera p1Camera;
-    public Camera p2Camera;
+    public Camera p1CannonCamera;
+    public Camera p2CannonCamera;
 
 	public GameObject player1;
 	public GameObject player2;
@@ -21,6 +21,11 @@ public class GameController : MonoBehaviour {
 
 	int cameraThrust;
 
+    float p1RotationX;
+    float p2RotationX;
+    float p1RotationY;
+    float p2RotationY;
+
 	float rotationX;
 	float rotationY;
 
@@ -28,27 +33,30 @@ public class GameController : MonoBehaviour {
 	{
 		currentPlayerTag = player1.tag;
 
-        p1Camera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
-        p1Camera.depth = mainCamera.depth + 1;
+        p1CannonCamera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
+        p1CannonCamera.depth = mainCamera.depth + 1;
 
-        p2Camera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
-        p2Camera.depth = mainCamera.depth + 1;
+        p2CannonCamera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
+        p2CannonCamera.depth = mainCamera.depth + 1;
 	}
 
 	void Start()
 	{
 		cameraThrust = 1;
-		rotationX = 225f;
-		rotationY = 5f;
+		p1RotationX = rotationX = 225f;
+		p1RotationX = p2RotationY = rotationY = 5f;
+
+        p2RotationX = 45f;
+
+        Debug.Log("CrotX: " + firstPersonCamera.transform.localRotation.eulerAngles.x + ", CrotY: " + firstPersonCamera.transform.localRotation.eulerAngles.y);
 
 		p1CameraPos = p2CameraPos = firstPersonCamera.transform.position;
         p1CameraRot = Quaternion.Euler(5, 225, 0);
         p2CameraRot = Quaternion.Euler(5, 45, 0);
 
 		mainCamera.enabled = false;
-        p2Camera.enabled = false;
+        p2CannonCamera.enabled = false;
 		firstPersonCamera.enabled = true;
-
 	}
 
 	void FixedUpdate()
@@ -102,8 +110,14 @@ public class GameController : MonoBehaviour {
 			firstPersonCamera.transform.position = p2CameraPos;
 			firstPersonCamera.transform.rotation = p2CameraRot;
 
-            p1Camera.enabled = false;
-            p2Camera.enabled = true;
+            p1CannonCamera.enabled = false;
+            p2CannonCamera.enabled = true;
+
+            p1RotationX = rotationX;
+            p1RotationY = rotationY;
+
+            rotationX = p2RotationX;
+            rotationY = p2RotationY;
 
 			currentPlayerTag = player2.tag;
 		} else {
@@ -113,8 +127,14 @@ public class GameController : MonoBehaviour {
 			firstPersonCamera.transform.position = p1CameraPos;
 			firstPersonCamera.transform.rotation = p1CameraRot;
 
-            p2Camera.enabled = false;
-            p1Camera.enabled = true;
+            p2CannonCamera.enabled = false;
+            p1CannonCamera.enabled = true;
+
+            p2RotationX = rotationX;
+            p2RotationY = rotationY;
+
+            rotationX = p1RotationX;
+            rotationY = p1RotationY;
 			
 			currentPlayerTag = player1.tag;
 		}
