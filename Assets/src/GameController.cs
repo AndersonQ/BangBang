@@ -48,8 +48,6 @@ public class GameController : MonoBehaviour {
 
         p2RotationX = 45f;
 
-        Debug.Log("CrotX: " + firstPersonCamera.transform.localRotation.eulerAngles.x + ", CrotY: " + firstPersonCamera.transform.localRotation.eulerAngles.y);
-
 		p1CameraPos = p2CameraPos = firstPersonCamera.transform.position;
         p1CameraRot = Quaternion.Euler(5, 225, 0);
         p2CameraRot = Quaternion.Euler(5, 45, 0);
