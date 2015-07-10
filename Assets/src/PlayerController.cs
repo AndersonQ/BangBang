@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BodyAngleControler : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
 	public GameObject projectilePrefab;
 	public GameObject cannon;

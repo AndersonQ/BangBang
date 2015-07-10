@@ -117,7 +117,7 @@ public class GameController : MonoBehaviour {
             rotationY = p2RotationY;
 
 			currentPlayerTag = player2.tag;
-            player2.GetComponent<BodyAngleControler>().shot = false;
+            player2.GetComponent<PlayerController>().shot = false;
 		} else {
 			p2CameraPos = firstPersonCamera.transform.position;
 			p2CameraRot = firstPersonCamera.transform.rotation;
@@ -135,7 +135,7 @@ public class GameController : MonoBehaviour {
             rotationY = p1RotationY;
 			
 			currentPlayerTag = player1.tag;
-            player1.GetComponent<BodyAngleControler>().shot = false;
+            player1.GetComponent<PlayerController>().shot = false;
 		}
 	}
 
