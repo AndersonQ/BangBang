@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour
@@ -7,8 +8,12 @@ public class PlayerController : MonoBehaviour
 	public GameObject cannon;
     public GameObject shotRespaw;
 
+    public Slider shootSlider;
+    public Image shootImage;
+
     public bool shot;
     public float minMagnitude;
+    float magnitude = 0f;
 
 	private GameObject gameController;
 	private GameController gameControllerScript;
@@ -20,24 +25,37 @@ public class PlayerController : MonoBehaviour
 		gameControllerScript = gameController.GetComponent<GameController>();
 
         shot = false;
+
+        shootImage.fillAmount = shootSlider.value = 0f;
 	}
 
 	void FixedUpdate()
 	{
-        float magnitude;
+        //float magnitude;
 		if (!Input.GetMouseButton (1) && 
 		    !Input.GetMouseButton (2) &&
 		    this.CompareTag(gameControllerScript.currentPlayerTag))
 		{
             Move();
 
-            if (Input.GetKeyDown("space"))
-                shotAt = Time.time;
-			
-			if (Input.GetKeyUp("space")) {
-                magnitude = minMagnitude + ((Time.time - shotAt) * 30);
-				Fire(magnitude);
-			}
+            if (!shot)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                    shotAt = Time.time;
+
+                if (!shot && Input.GetKey(KeyCode.Space))
+                {
+                    shootSlider.value = ((Time.time - shotAt) * 30) * 4;
+                    shootImage.fillAmount = ((Time.time - shotAt) * 0.3f) * 4;
+                }
+
+                if (!shot && Input.GetKeyUp(KeyCode.Space))
+                {
+                    magnitude = minMagnitude + ((Time.time - shotAt) * 30);
+				    Fire(magnitude);
+                    shootImage.fillAmount = shootSlider.value = magnitude = 0f;
+			    }
+            }
 		}
 	}
 
@@ -52,7 +70,6 @@ public class PlayerController : MonoBehaviour
 
 	void Fire(float magnitude)
 	{
-        Debug.Log(this.name + " shot: " + shot);
         if (!shot)
         {
             shot = true;
