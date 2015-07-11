@@ -3,8 +3,8 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
-	public Camera firstPersonCamera;
-	public Camera mainCamera;
+	public Camera freeFlyingCamera;
+	public Camera topCamera;
     public Camera p1CannonCamera;
     public Camera p2CannonCamera;
 
@@ -32,17 +32,17 @@ public class GameController : MonoBehaviour {
 	{
 		currentPlayerTag = player1.tag;
 
-        mainCamera.rect = new Rect(0.015f, 0.01f, 0.215f, 0.215f);
-        mainCamera.depth = firstPersonCamera.depth + 1;
+        topCamera.rect = new Rect(0.015f, 0.01f, 0.215f, 0.215f);
+        topCamera.depth = freeFlyingCamera.depth + 1;
 
         p1CannonCamera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
-        p1CannonCamera.depth = firstPersonCamera.depth + 1;
+        p1CannonCamera.depth = freeFlyingCamera.depth + 1;
 
         p2CannonCamera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
-        p2CannonCamera.depth = firstPersonCamera.depth + 1;
+        p2CannonCamera.depth = freeFlyingCamera.depth + 1;
 
-        mainCamera.enabled = true;
-        firstPersonCamera.enabled = true;
+        topCamera.enabled = true;
+        freeFlyingCamera.enabled = true;
         p2CannonCamera.enabled = false;
 	}
 
@@ -55,12 +55,12 @@ public class GameController : MonoBehaviour {
         p2RotationX = 45f;
 
         p1CameraPos = 
-            firstPersonCamera.transform.position = 
+            freeFlyingCamera.transform.position = 
             new Vector3(-40f, 15f, -40);
         p2CameraPos = new Vector3(40f, 15f, 40f);
 
         p1CameraRot =
-            firstPersonCamera.transform.rotation = 
+            freeFlyingCamera.transform.rotation = 
             Quaternion.Euler(10, 45, 0);
         p2CameraRot = Quaternion.Euler(10, 225, 0);
 
@@ -81,16 +81,16 @@ public class GameController : MonoBehaviour {
 	void Move()
 	{
 		Vector3 upDown = new Vector3(0, 1, 0);
-		Vector3 forward = firstPersonCamera.transform.forward * Input.GetAxis("Vertical");
-		Vector3 right = firstPersonCamera.transform.right * Input.GetAxis("Horizontal");
+		Vector3 forward = freeFlyingCamera.transform.forward * Input.GetAxis("Vertical");
+		Vector3 right = freeFlyingCamera.transform.right * Input.GetAxis("Horizontal");
 
-		firstPersonCamera.transform.position += forward * cameraThrust;
-		firstPersonCamera.transform.position += right * cameraThrust;
+		freeFlyingCamera.transform.position += forward * cameraThrust;
+		freeFlyingCamera.transform.position += right * cameraThrust;
 
 		if (Input.GetKey("e"))
-			firstPersonCamera.transform.position += upDown;
+			freeFlyingCamera.transform.position += upDown;
 		else if (Input.GetKey("q"))
-			firstPersonCamera.transform.position -= upDown;
+			freeFlyingCamera.transform.position -= upDown;
 	}
 
 	void Rotate()
@@ -99,18 +99,18 @@ public class GameController : MonoBehaviour {
 		rotationY += Input.GetAxis("Mouse Y");
 		rotationY = Mathf.Clamp (rotationY, -90, 90);
 		
-		firstPersonCamera.transform.localRotation = Quaternion.AngleAxis(rotationX, Vector3.up);
-		firstPersonCamera.transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);
+		freeFlyingCamera.transform.localRotation = Quaternion.AngleAxis(rotationX, Vector3.up);
+		freeFlyingCamera.transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);
 	}
 
 	public void swapPlayers()
 	{
 		if (player1.CompareTag(currentPlayerTag)) {
-			p1CameraPos = firstPersonCamera.transform.position;
-			p1CameraRot = firstPersonCamera.transform.rotation;
+			p1CameraPos = freeFlyingCamera.transform.position;
+			p1CameraRot = freeFlyingCamera.transform.rotation;
 
-			firstPersonCamera.transform.position = p2CameraPos;
-			firstPersonCamera.transform.rotation = p2CameraRot;
+			freeFlyingCamera.transform.position = p2CameraPos;
+			freeFlyingCamera.transform.rotation = p2CameraRot;
 
             p1CannonCamera.enabled = false;
             p2CannonCamera.enabled = true;
@@ -124,11 +124,11 @@ public class GameController : MonoBehaviour {
 			currentPlayerTag = player2.tag;
             player2.GetComponent<PlayerController>().shot = false;
 		} else {
-			p2CameraPos = firstPersonCamera.transform.position;
-			p2CameraRot = firstPersonCamera.transform.rotation;
+			p2CameraPos = freeFlyingCamera.transform.position;
+			p2CameraRot = freeFlyingCamera.transform.rotation;
 			
-			firstPersonCamera.transform.position = p1CameraPos;
-			firstPersonCamera.transform.rotation = p1CameraRot;
+			freeFlyingCamera.transform.position = p1CameraPos;
+			freeFlyingCamera.transform.rotation = p1CameraRot;
 
             p2CannonCamera.enabled = false;
             p1CannonCamera.enabled = true;
