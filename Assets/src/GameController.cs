@@ -47,9 +47,15 @@ public class GameController : MonoBehaviour {
 
         p2RotationX = 45f;
 
-		p1CameraPos = p2CameraPos = firstPersonCamera.transform.position;
-        p1CameraRot = Quaternion.Euler(5, 225, 0);
-        p2CameraRot = Quaternion.Euler(5, 45, 0);
+        p1CameraPos = 
+            firstPersonCamera.transform.position = 
+            new Vector3(-40f, 15f, -40);
+        p2CameraPos = new Vector3(40f, 15f, 40f);
+
+        p1CameraRot =
+            firstPersonCamera.transform.rotation = 
+            Quaternion.Euler(10, 45, 0);
+        p2CameraRot = Quaternion.Euler(10, 225, 0);
 
 		mainCamera.enabled = false;
         p2CannonCamera.enabled = false;
