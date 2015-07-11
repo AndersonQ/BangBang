@@ -105,7 +105,8 @@ public class GameController : MonoBehaviour {
 
 	public void swapPlayers()
 	{
-		if (player1.CompareTag(currentPlayerTag)) {
+		if (player1.CompareTag(currentPlayerTag)) 
+        {
 			p1CameraPos = freeFlyingCamera.transform.position;
 			p1CameraRot = freeFlyingCamera.transform.rotation;
 
@@ -123,7 +124,9 @@ public class GameController : MonoBehaviour {
 
 			currentPlayerTag = player2.tag;
             player2.GetComponent<PlayerController>().shot = false;
-		} else {
+		}
+        else 
+        {
 			p2CameraPos = freeFlyingCamera.transform.position;
 			p2CameraRot = freeFlyingCamera.transform.rotation;
 			

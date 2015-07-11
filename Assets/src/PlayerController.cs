@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
 
 	void FixedUpdate()
 	{
-        //float magnitude;
 		if (!Input.GetMouseButton (1) && 
 		    !Input.GetMouseButton (2) &&
 		    this.CompareTag(gameControllerScript.currentPlayerTag))
