@@ -32,11 +32,18 @@ public class GameController : MonoBehaviour {
 	{
 		currentPlayerTag = player1.tag;
 
+        mainCamera.rect = new Rect(0.015f, 0.01f, 0.215f, 0.215f);
+        mainCamera.depth = firstPersonCamera.depth + 1;
+
         p1CannonCamera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
-        p1CannonCamera.depth = mainCamera.depth + 1;
+        p1CannonCamera.depth = firstPersonCamera.depth + 1;
 
         p2CannonCamera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
-        p2CannonCamera.depth = mainCamera.depth + 1;
+        p2CannonCamera.depth = firstPersonCamera.depth + 1;
+
+        mainCamera.enabled = true;
+        firstPersonCamera.enabled = true;
+        p2CannonCamera.enabled = false;
 	}
 
 	void Start()
@@ -57,25 +64,17 @@ public class GameController : MonoBehaviour {
             Quaternion.Euler(10, 45, 0);
         p2CameraRot = Quaternion.Euler(10, 225, 0);
 
-		mainCamera.enabled = false;
-        p2CannonCamera.enabled = false;
-		firstPersonCamera.enabled = true;
 	}
 
 	void FixedUpdate()
 	{
-		mainCamera.enabled = false;
-		firstPersonCamera.enabled = true;
-
         if (Input.GetKeyDown(KeyCode.Escape))
             swapPlayers();
 
-		if (Input.GetMouseButton (1)) {
+		if (Input.GetMouseButton (1)) 
+        {
 			Rotate();
 			Move();
-		} else if (Input.GetMouseButton (2))  {
-			mainCamera.enabled = true;
-			firstPersonCamera.enabled = false;
 		}
 	}
 
