@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
 	public GameObject cannon;
     public GameObject shotRespaw;
 
-    public Slider shootSlider;
     public Image shootImage;
 
     public bool shot;
@@ -26,7 +25,7 @@ public class PlayerController : MonoBehaviour
 
         shot = false;
 
-        shootImage.fillAmount = shootSlider.value = 0f;
+        shootImage.fillAmount = 0f;
 	}
 
 	void FixedUpdate()
@@ -44,16 +43,13 @@ public class PlayerController : MonoBehaviour
                     shotAt = Time.time;
 
                 if (!shot && Input.GetKey(KeyCode.Space))
-                {
-                    shootSlider.value = ((Time.time - shotAt) * 30) * 4;
                     shootImage.fillAmount = ((Time.time - shotAt) * 0.3f) * 4;
-                }
 
                 if (!shot && Input.GetKeyUp(KeyCode.Space))
                 {
                     magnitude = minMagnitude + ((Time.time - shotAt) * 30);
 				    Fire(magnitude);
-                    shootImage.fillAmount = shootSlider.value = magnitude = 0f;
+                    shootImage.fillAmount = magnitude = 0f;
 			    }
             }
 		}
