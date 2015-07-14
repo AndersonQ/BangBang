@@ -49,10 +49,10 @@ public class GameController : MonoBehaviour {
 	void Start()
 	{
 		cameraThrust = 1;
-		p1RotationX = rotationX = 225f;
-		p1RotationX = p2RotationY = rotationY = 5f;
+		p1RotationX = rotationX = 50f;
+		p1RotationY = p2RotationY = rotationY = 0f;
 
-        p2RotationX = 45f;
+        p2RotationX = 225f;
 
         p1CameraPos = 
             freeFlyingCamera.transform.position = 
@@ -66,11 +66,8 @@ public class GameController : MonoBehaviour {
 
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
-        if (Input.GetKeyDown(KeyCode.Escape))
-            swapPlayers();
-
 		if (Input.GetMouseButton (1)) 
         {
 			Rotate();
@@ -98,7 +95,7 @@ public class GameController : MonoBehaviour {
 		rotationX += Input.GetAxis("Mouse X");
 		rotationY += Input.GetAxis("Mouse Y");
 		rotationY = Mathf.Clamp (rotationY, -90, 90);
-		
+			
 		freeFlyingCamera.transform.localRotation = Quaternion.AngleAxis(rotationX, Vector3.up);
 		freeFlyingCamera.transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);
 	}
