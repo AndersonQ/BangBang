@@ -144,5 +144,9 @@ public class GameController : MonoBehaviour {
     public void ShotHit(GameObject hit)
     {
         Debug.Log("Hit: " + hit.name + " - " + hit.tag);
+		if(hit.tag.Contains("Player")) {
+			Destroy(hit);
+			Time.timeScale = 0f;
+		}
     }
 }
