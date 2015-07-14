@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 	private GameController gameControllerScript;
     private float shotAt;
 
+	//""
 	void Awake()
 	{
 		gameController = GameObject.Find("GameController");
@@ -28,30 +29,28 @@ public class PlayerController : MonoBehaviour
         shootImage.fillAmount = 0f;
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
-        //float magnitude;
 		if (!Input.GetMouseButton (1) && 
 		    !Input.GetMouseButton (2) &&
 		    this.CompareTag(gameControllerScript.currentPlayerTag))
 		{
-            Move();
-
-            if (!shot)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                    shotAt = Time.time;
-
-                if (!shot && Input.GetKey(KeyCode.Space))
-                    shootImage.fillAmount = ((Time.time - shotAt) * 0.3f) * 4;
-
-                if (!shot && Input.GetKeyUp(KeyCode.Space))
-                {
-                    magnitude = minMagnitude + ((Time.time - shotAt) * 30);
-				    Fire(magnitude);
-                    shootImage.fillAmount = magnitude = 0f;
-			    }
-            }
+			Move();
+			if (!shot)
+			{
+				if (Input.GetKeyDown(KeyCode.Space)) 
+					shotAt = Time.time;
+				
+				if (Input.GetKey(KeyCode.Space))
+					shootImage.fillAmount = ((Time.time - shotAt) * 0.3f) * 4;
+				
+				if (Input.GetKeyUp(KeyCode.Space))
+				{
+					magnitude = minMagnitude + ((Time.time - shotAt) * 30);
+					Fire(magnitude);
+					shootImage.fillAmount = magnitude = 0f;
+				}
+			}
 		}
 	}
 
