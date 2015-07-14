@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
 				if (Input.GetKeyUp(KeyCode.Space))
 				{
 					magnitude = minMagnitude + ((Time.time - shotAt) * 30);
+					magnitude = (magnitude > 40f) ? 40f : magnitude;
 					Fire(magnitude);
 					shootImage.fillAmount = magnitude = 0f;
 				}
