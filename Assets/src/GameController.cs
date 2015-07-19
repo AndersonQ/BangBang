@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour {
 	public GameObject player1;
 	public GameObject player2;
 
+    public GameObject currentPlayer;
+    public GameObject enemyPlayer;
+
 	public string currentPlayerTag;
 
 	Vector3 p1CameraPos;
@@ -31,6 +34,8 @@ public class GameController : MonoBehaviour {
 	void Awake()
 	{
 		currentPlayerTag = player1.tag;
+        currentPlayer = player1;
+        enemyPlayer = player2;
 
         topCamera.rect = new Rect(0.015f, 0.01f, 0.215f, 0.215f);
         topCamera.depth = freeFlyingCamera.depth + 1;
@@ -49,10 +54,10 @@ public class GameController : MonoBehaviour {
 	void Start()
 	{
 		cameraThrust = 1;
-		p1RotationX = rotationX = 225f;
-		p1RotationX = p2RotationY = rotationY = 5f;
+		p1RotationX = rotationX = 50f;
+		p1RotationY = p2RotationY = rotationY = 0f;
 
-        p2RotationX = 45f;
+        p2RotationX = 225f;
 
         p1CameraPos = 
             freeFlyingCamera.transform.position = 
@@ -66,11 +71,8 @@ public class GameController : MonoBehaviour {
 
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
-        if (Input.GetKeyDown(KeyCode.Escape))
-            swapPlayers();
-
 		if (Input.GetMouseButton (1)) 
         {
 			Rotate();
@@ -98,14 +100,15 @@ public class GameController : MonoBehaviour {
 		rotationX += Input.GetAxis("Mouse X");
 		rotationY += Input.GetAxis("Mouse Y");
 		rotationY = Mathf.Clamp (rotationY, -90, 90);
-		
+			
 		freeFlyingCamera.transform.localRotation = Quaternion.AngleAxis(rotationX, Vector3.up);
 		freeFlyingCamera.transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);
 	}
 
 	public void swapPlayers()
 	{
-		if (player1.CompareTag(currentPlayerTag)) {
+		if (player1.CompareTag(currentPlayerTag)) 
+        {
 			p1CameraPos = freeFlyingCamera.transform.position;
 			p1CameraRot = freeFlyingCamera.transform.rotation;
 
@@ -122,8 +125,12 @@ public class GameController : MonoBehaviour {
             rotationY = p2RotationY;
 
 			currentPlayerTag = player2.tag;
+            currentPlayer = player2;
+            enemyPlayer = player1;
             player2.GetComponent<PlayerController>().shot = false;
-		} else {
+		}
+        else 
+        {
 			p2CameraPos = freeFlyingCamera.transform.position;
 			p2CameraRot = freeFlyingCamera.transform.rotation;
 			
@@ -140,6 +147,8 @@ public class GameController : MonoBehaviour {
             rotationY = p1RotationY;
 			
 			currentPlayerTag = player1.tag;
+            currentPlayer = player1;
+            enemyPlayer = player2;
             player1.GetComponent<PlayerController>().shot = false;
 		}
 	}
@@ -147,5 +156,14 @@ public class GameController : MonoBehaviour {
     public void ShotHit(GameObject hit)
     {
         Debug.Log("Hit: " + hit.name + " - " + hit.tag);
+		if(hit.tag.Contains("Player")) {
+			Destroy(hit);
+			Time.timeScale = 0f;
+		}
+    }
+
+    public void setMainCameraEnable(bool enable)
+    {
+        freeFlyingCamera.enabled = enable;
     }
 }
