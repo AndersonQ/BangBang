@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour {
 	public GameObject player1;
 	public GameObject player2;
 
+    public GameObject currentPlayer;
+    public GameObject enemyPlayer;
+
 	public string currentPlayerTag;
 
 	Vector3 p1CameraPos;
@@ -31,6 +34,8 @@ public class GameController : MonoBehaviour {
 	void Awake()
 	{
 		currentPlayerTag = player1.tag;
+        currentPlayer = player1;
+        enemyPlayer = player2;
 
         topCamera.rect = new Rect(0.015f, 0.01f, 0.215f, 0.215f);
         topCamera.depth = freeFlyingCamera.depth + 1;
@@ -120,6 +125,8 @@ public class GameController : MonoBehaviour {
             rotationY = p2RotationY;
 
 			currentPlayerTag = player2.tag;
+            currentPlayer = player2;
+            enemyPlayer = player1;
             player2.GetComponent<PlayerController>().shot = false;
 		}
         else 
@@ -140,6 +147,8 @@ public class GameController : MonoBehaviour {
             rotationY = p1RotationY;
 			
 			currentPlayerTag = player1.tag;
+            currentPlayer = player1;
+            enemyPlayer = player2;
             player1.GetComponent<PlayerController>().shot = false;
 		}
 	}
@@ -151,5 +160,10 @@ public class GameController : MonoBehaviour {
 			Destroy(hit);
 			Time.timeScale = 0f;
 		}
+    }
+
+    public void setMainCameraEnable(bool enable)
+    {
+        freeFlyingCamera.enabled = enable;
     }
 }
