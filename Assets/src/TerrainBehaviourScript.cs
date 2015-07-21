@@ -19,7 +19,7 @@ public class TerrainBehaviourScript : MonoBehaviour {
 		/*
 		this.terrain.terrainData.
 		this.terrain.terrainData.SetHeights(0, 0, this.originalHeights);
-	*/
+		*/
 		int i, j = 0;
 		i = 0;
 		Debug.Log(terrain.terrainData.heightmapWidth);
