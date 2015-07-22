@@ -10,11 +10,14 @@ public class GameController : MonoBehaviour {
 
 	public GameObject player1;
 	public GameObject player2;
+	public GameObject explosionPrefab;
 
     public GameObject currentPlayer;
     public GameObject enemyPlayer;
 
 	public string currentPlayerTag;
+
+	GameObject explosion;
 
 	Vector3 p1CameraPos;
 	Vector3 p2CameraPos;
@@ -158,9 +161,26 @@ public class GameController : MonoBehaviour {
         Debug.Log("Hit: " + hit.name + " - " + hit.tag);
 		if(hit.tag.Contains("Player")) {
 			Destroy(hit);
-			Time.timeScale = 0f;
+			explosion = (GameObject)Instantiate(explosionPrefab,
+			                                                hit.transform.position,
+			                                                Quaternion.identity);
+			StartCoroutine("explosionGrow");
+			//Time.timeScale = 0f;
 		}
     }
+
+	IEnumerator explosionGrow()
+	{
+		float startTime = Time.time;
+		startTime += 3;
+		while (Time.time < startTime)
+		{
+			float lerp = Mathf.Lerp(4f, 10f, 3f);
+			Debug.Log("lerp: " + lerp);
+			explosion.transform.localScale = new Vector3(lerp, lerp, lerp);
+			yield return null;
+		}
+	}
 
     public void setMainCameraEnable(bool enable)
     {

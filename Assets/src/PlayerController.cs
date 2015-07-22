@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 	public GameObject projectilePrefab;
 	public GameObject cannon;
     public GameObject shotRespaw;
+	public GameObject explosionPrefab;
 
     public Image shootImage;
 
