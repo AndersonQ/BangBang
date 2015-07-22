@@ -61,7 +61,11 @@ public class PlayerController : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
 
         this.transform.eulerAngles += new Vector3(0.0f, moveHorizontal, 0.0f);
-        cannon.transform.eulerAngles -= new Vector3(moveVertical, 0.0f, 0.0f);
+
+		//Debug.Log("moveVertical: " + moveVertical);
+		if ((cannon.transform.eulerAngles.x < 63.5 || moveVertical > 0) &&
+		    (cannon.transform.eulerAngles.x > 26.5 || moveVertical < 0))
+        	cannon.transform.eulerAngles -= new Vector3(moveVertical, 0.0f, 0.0f);
     }
 
 	void Fire(float magnitude)
