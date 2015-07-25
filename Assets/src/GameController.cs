@@ -81,6 +81,9 @@ public class GameController : MonoBehaviour {
 			Rotate();
 			Move();
 		}
+        if (Input.GetKey(KeyCode.Escape))
+            ShotHit(currentPlayer);
+
 	}
 
 	void Move()
@@ -172,14 +175,14 @@ public class GameController : MonoBehaviour {
 	IEnumerator explosionGrow()
 	{
 		float startTime = Time.time;
-		startTime += 3;
-		while (Time.time < startTime)
+		while (Time.time < startTime + 0.65)
 		{
-			float lerp = Mathf.Lerp(4f, 10f, 3f);
-			Debug.Log("lerp: " + lerp);
+            float lerpStep = (Time.time - startTime) / 0.5f;
+            float lerp = Mathf.Lerp(4f, 10f, lerpStep);
 			explosion.transform.localScale = new Vector3(lerp, lerp, lerp);
 			yield return null;
 		}
+        Destroy(explosion);
 	}
 
     public void setMainCameraEnable(bool enable)
