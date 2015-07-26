@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour {
     public GameObject currentPlayer;
     public GameObject enemyPlayer;
     public Text playerWinsTxt;
+    public Text playingTxt;
 
 	public GameObject explosionPrefab;
 
@@ -45,6 +46,7 @@ public class GameController : MonoBehaviour {
         gameOver = false;
 
 		currentPlayerTag = player1.tag;
+        playingTxt.text = "Player " + currentPlayerTag[currentPlayerTag.Length - 1];
         currentPlayer = player1;
         enemyPlayer = player2;
 
@@ -167,6 +169,8 @@ public class GameController : MonoBehaviour {
             enemyPlayer = player2;
             player1.GetComponent<PlayerController>().shot = false;
 		}
+
+        playingTxt.text = "Player " + currentPlayerTag[currentPlayerTag.Length - 1];
 	}
 
     public void ShotHit(GameObject hit)
