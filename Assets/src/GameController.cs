@@ -13,7 +13,6 @@ public class GameController : MonoBehaviour {
 	public GameObject player1;
 	public GameObject player2;
 	public GameObject explosionPrefab;
-    public GameObject deadSmokePrefab;
 
     public GameObject currentPlayer;
     public GameObject enemyPlayer;
@@ -181,7 +180,6 @@ public class GameController : MonoBehaviour {
             explosion = (GameObject)Instantiate(explosionPrefab,
                                                             hit.transform.position,
                                                             Quaternion.identity);
-            Instantiate(deadSmokePrefab, hit.transform.position, Quaternion.identity);
             
             Destroy(hit);
             StartCoroutine("explosionGrow");
