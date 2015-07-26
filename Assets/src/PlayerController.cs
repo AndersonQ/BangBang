@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
 	private GameObject gameController;
 	private GameController gameControllerScript;
+    private AudioSource shootSound;
     private float shotAt;
 
 	//""
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
 	{
 		gameController = GameObject.Find("GameController");
 		gameControllerScript = gameController.GetComponent<GameController>();
+        shootSound = GetComponent<AudioSource>();
 
         shot = false;
 
@@ -73,6 +75,7 @@ public class PlayerController : MonoBehaviour
 	{
         if (!shot)
         {
+            shootSound.Play();
             shot = true;
             GameObject projectile = (GameObject)Instantiate(projectilePrefab,
                                                             shotRespaw.transform.position,
