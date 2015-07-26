@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour {
 	public GameObject player1;
 	public GameObject player2;
 	public GameObject explosionPrefab;
+    public GameObject deadSmokePrefab;
 
     public GameObject currentPlayer;
     public GameObject enemyPlayer;
@@ -161,15 +162,17 @@ public class GameController : MonoBehaviour {
 
     public void ShotHit(GameObject hit)
     {
-        Debug.Log("Hit: " + hit.name + " - " + hit.tag);
-		if(hit.tag.Contains("Player")) {
-			Destroy(hit);
-			explosion = (GameObject)Instantiate(explosionPrefab,
-			                                                hit.transform.position,
-			                                                Quaternion.identity);
-			StartCoroutine("explosionGrow");
-			//Time.timeScale = 0f;
-		}
+        //Debug.Log("Hit: " + hit.name + " - " + hit.tag);
+        if (hit != null && hit.tag.Contains("Player"))
+        {
+            explosion = (GameObject)Instantiate(explosionPrefab,
+                                                            hit.transform.position,
+                                                            Quaternion.identity);
+            Instantiate(deadSmokePrefab, hit.transform.position, Quaternion.identity);
+            Destroy(hit);
+            StartCoroutine("explosionGrow");
+            //Time.timeScale = 0f;
+        }
     }
 
 	IEnumerator explosionGrow()
@@ -183,6 +186,7 @@ public class GameController : MonoBehaviour {
 			yield return null;
 		}
         Destroy(explosion);
+        yield break;
 	}
 
     public void setMainCameraEnable(bool enable)
