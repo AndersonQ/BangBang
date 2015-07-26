@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
+    public bool gameOver;
+
 	public Camera freeFlyingCamera;
 	public Camera topCamera;
     public Camera p1CannonCamera;
@@ -39,6 +41,8 @@ public class GameController : MonoBehaviour {
 
 	void Awake()
 	{
+        gameOver = false;
+
 		currentPlayerTag = player1.tag;
         currentPlayer = player1;
         enemyPlayer = player2;
@@ -169,7 +173,8 @@ public class GameController : MonoBehaviour {
         //Debug.Log("Hit: " + hit.name + " - " + hit.tag);
         if (hit != null && hit.tag.Contains("Player"))
         {
-            
+            gameOver = true;
+
             explosionSound.timeSamples = 44100*2;
             explosionSound.Play();
             //System.Threading.Thread.Sleep(1000);
