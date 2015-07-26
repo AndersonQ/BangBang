@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 	public GameObject projectilePrefab;
 	public GameObject cannon;
     public GameObject shotRespaw;
+	public GameObject explosionPrefab;
 
     public Image shootImage;
 
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
 	private GameObject gameController;
 	private GameController gameControllerScript;
+    private AudioSource shootSound;
     private float shotAt;
 
 	//""
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
 	{
 		gameController = GameObject.Find("GameController");
 		gameControllerScript = gameController.GetComponent<GameController>();
+        shootSound = GetComponent<AudioSource>();
 
         shot = false;
 
@@ -61,13 +64,18 @@ public class PlayerController : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
 
         this.transform.eulerAngles += new Vector3(0.0f, moveHorizontal, 0.0f);
-        cannon.transform.eulerAngles -= new Vector3(moveVertical, 0.0f, 0.0f);
+
+		//Debug.Log("moveVertical: " + moveVertical);
+		if ((cannon.transform.eulerAngles.x < 63.5 || moveVertical > 0) &&
+		    (cannon.transform.eulerAngles.x > 26.5 || moveVertical < 0))
+        	cannon.transform.eulerAngles -= new Vector3(moveVertical, 0.0f, 0.0f);
     }
 
 	void Fire(float magnitude)
 	{
         if (!shot)
         {
+            shootSound.Play();
             shot = true;
             GameObject projectile = (GameObject)Instantiate(projectilePrefab,
                                                             shotRespaw.transform.position,

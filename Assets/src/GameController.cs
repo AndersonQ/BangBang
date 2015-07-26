@@ -10,11 +10,17 @@ public class GameController : MonoBehaviour {
 
 	public GameObject player1;
 	public GameObject player2;
+	public GameObject explosionPrefab;
+    public GameObject deadSmokePrefab;
 
     public GameObject currentPlayer;
     public GameObject enemyPlayer;
 
 	public string currentPlayerTag;
+
+	GameObject explosion;
+
+    AudioSource explosionSound;
 
 	Vector3 p1CameraPos;
 	Vector3 p2CameraPos;
@@ -49,6 +55,8 @@ public class GameController : MonoBehaviour {
         topCamera.enabled = true;
         freeFlyingCamera.enabled = true;
         p2CannonCamera.enabled = false;
+
+        explosionSound = GetComponent<AudioSource>();
 	}
 
 	void Start()
@@ -78,6 +86,9 @@ public class GameController : MonoBehaviour {
 			Rotate();
 			Move();
 		}
+        if (Input.GetKey(KeyCode.Escape))
+            ShotHit(currentPlayer);
+
 	}
 
 	void Move()
@@ -155,12 +166,38 @@ public class GameController : MonoBehaviour {
 
     public void ShotHit(GameObject hit)
     {
-        Debug.Log("Hit: " + hit.name + " - " + hit.tag);
-		if(hit.tag.Contains("Player")) {
-			Destroy(hit);
-			Time.timeScale = 0f;
-		}
+        //Debug.Log("Hit: " + hit.name + " - " + hit.tag);
+        if (hit != null && hit.tag.Contains("Player"))
+        {
+            
+            explosionSound.timeSamples = 44100*2;
+            explosionSound.Play();
+            //System.Threading.Thread.Sleep(1000);
+            explosion = (GameObject)Instantiate(explosionPrefab,
+                                                            hit.transform.position,
+                                                            Quaternion.identity);
+            Instantiate(deadSmokePrefab, hit.transform.position, Quaternion.identity);
+            
+            Destroy(hit);
+            StartCoroutine("explosionGrow");
+            //Time.timeScale = 0f;
+        }
     }
+
+	IEnumerator explosionGrow()
+	{
+		float startTime = Time.time;
+		while (Time.time < startTime + 1.5)//0.65)
+		{
+            float lerpStep = (Time.time - startTime) / 1.5f;// / 0.65f;
+            float lerp = Mathf.Lerp(3f, 15f, lerpStep);
+			explosion.transform.localScale = new Vector3(lerp, lerp, lerp);
+			yield return null;
+		}
+        Destroy(explosion);
+        explosionSound.Stop();
+        yield break;
+	}
 
     public void setMainCameraEnable(bool enable)
     {
