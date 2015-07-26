@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 	public GameObject cannon;
     public GameObject shotRespaw;
 	public GameObject explosionPrefab;
+    public GameObject shootSmokePrefab;
 
     public Image shootImage;
 
@@ -80,6 +81,7 @@ public class PlayerController : MonoBehaviour
             GameObject projectile = (GameObject)Instantiate(projectilePrefab,
                                                             shotRespaw.transform.position,
                                                             Quaternion.identity);
+            Instantiate(shootSmokePrefab, shotRespaw.transform.position, Quaternion.identity);
 
             Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
             projectileRb.velocity = cannon.transform.TransformVector(new Vector3(0.0f, magnitude, 0.0f));

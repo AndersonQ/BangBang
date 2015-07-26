@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GameController : MonoBehaviour {
+
+    public bool gameOver;
 
 	public Camera freeFlyingCamera;
 	public Camera topCamera;
@@ -10,11 +13,12 @@ public class GameController : MonoBehaviour {
 
 	public GameObject player1;
 	public GameObject player2;
-	public GameObject explosionPrefab;
-    public GameObject deadSmokePrefab;
-
     public GameObject currentPlayer;
     public GameObject enemyPlayer;
+    public Text playerWinsTxt;
+    public Text playingTxt;
+
+	public GameObject explosionPrefab;
 
 	public string currentPlayerTag;
 
@@ -39,7 +43,10 @@ public class GameController : MonoBehaviour {
 
 	void Awake()
 	{
+        gameOver = false;
+
 		currentPlayerTag = player1.tag;
+        playingTxt.text = "Player " + currentPlayerTag[currentPlayerTag.Length - 1];
         currentPlayer = player1;
         enemyPlayer = player2;
 
@@ -162,34 +169,35 @@ public class GameController : MonoBehaviour {
             enemyPlayer = player2;
             player1.GetComponent<PlayerController>().shot = false;
 		}
+
+        playingTxt.text = "Player " + currentPlayerTag[currentPlayerTag.Length - 1];
 	}
 
     public void ShotHit(GameObject hit)
     {
-        //Debug.Log("Hit: " + hit.name + " - " + hit.tag);
         if (hit != null && hit.tag.Contains("Player"))
         {
-            
+            char winner = currentPlayerTag[currentPlayerTag.Length - 1];
+            gameOver = true;
+            playerWinsTxt.text = "Player " + winner + " wins!";
+
             explosionSound.timeSamples = 44100*2;
             explosionSound.Play();
-            //System.Threading.Thread.Sleep(1000);
             explosion = (GameObject)Instantiate(explosionPrefab,
                                                             hit.transform.position,
                                                             Quaternion.identity);
-            Instantiate(deadSmokePrefab, hit.transform.position, Quaternion.identity);
             
             Destroy(hit);
             StartCoroutine("explosionGrow");
-            //Time.timeScale = 0f;
         }
     }
 
 	IEnumerator explosionGrow()
 	{
 		float startTime = Time.time;
-		while (Time.time < startTime + 1.5)//0.65)
+		while (Time.time < startTime + 1.5)
 		{
-            float lerpStep = (Time.time - startTime) / 1.5f;// / 0.65f;
+            float lerpStep = (Time.time - startTime) / 1.5f;
             float lerp = Mathf.Lerp(3f, 15f, lerpStep);
 			explosion.transform.localScale = new Vector3(lerp, lerp, lerp);
 			yield return null;
