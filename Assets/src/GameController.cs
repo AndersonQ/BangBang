@@ -20,6 +20,8 @@ public class GameController : MonoBehaviour {
 
 	GameObject explosion;
 
+    AudioSource explosionSound;
+
 	Vector3 p1CameraPos;
 	Vector3 p2CameraPos;
 	Quaternion p1CameraRot;
@@ -53,6 +55,8 @@ public class GameController : MonoBehaviour {
         topCamera.enabled = true;
         freeFlyingCamera.enabled = true;
         p2CannonCamera.enabled = false;
+
+        explosionSound = GetComponent<AudioSource>();
 	}
 
 	void Start()
@@ -165,10 +169,15 @@ public class GameController : MonoBehaviour {
         //Debug.Log("Hit: " + hit.name + " - " + hit.tag);
         if (hit != null && hit.tag.Contains("Player"))
         {
+            
+            explosionSound.timeSamples = 44100*2;
+            explosionSound.Play();
+            //System.Threading.Thread.Sleep(1000);
             explosion = (GameObject)Instantiate(explosionPrefab,
                                                             hit.transform.position,
                                                             Quaternion.identity);
             Instantiate(deadSmokePrefab, hit.transform.position, Quaternion.identity);
+            
             Destroy(hit);
             StartCoroutine("explosionGrow");
             //Time.timeScale = 0f;
@@ -178,14 +187,15 @@ public class GameController : MonoBehaviour {
 	IEnumerator explosionGrow()
 	{
 		float startTime = Time.time;
-		while (Time.time < startTime + 0.65)
+		while (Time.time < startTime + 1.5)//0.65)
 		{
-            float lerpStep = (Time.time - startTime) / 0.5f;
-            float lerp = Mathf.Lerp(4f, 10f, lerpStep);
+            float lerpStep = (Time.time - startTime) / 1.5f;// / 0.65f;
+            float lerp = Mathf.Lerp(3f, 15f, lerpStep);
 			explosion.transform.localScale = new Vector3(lerp, lerp, lerp);
 			yield return null;
 		}
         Destroy(explosion);
+        explosionSound.Stop();
         yield break;
 	}
 
