@@ -55,6 +55,9 @@ public class PlayerController : MonoBehaviour
 					Fire(magnitude);
 					shootImage.fillAmount = magnitude = 0f;
 				}
+
+                if (Input.GetKeyUp(KeyCode.I))
+                    Debug.Log("cannon.transform.eulerAngles.x: " + cannon.transform.eulerAngles.x);
 			}
 		}
 	}
@@ -66,10 +69,7 @@ public class PlayerController : MonoBehaviour
 
         this.transform.eulerAngles += new Vector3(0.0f, moveHorizontal, 0.0f);
 
-		Debug.Log("cannon.transform.eulerAngles.x: " + cannon.transform.eulerAngles.x);
-		//if ((cannon.transform.eulerAngles.x < 63.5 || moveVertical > 0) &&
-		//    (cannon.transform.eulerAngles.x > 26.5 || moveVertical < 0))
-		if (cannon.transform.eulerAngles.x > 275 || moveVertical < 0)
+        //if (cannon.transform.eulerAngles.x >= 0 && cannon.transform.eulerAngles.x <= 320)
         	cannon.transform.eulerAngles -= new Vector3(moveVertical, 0.0f, 0.0f);
     }
 
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
             Instantiate(shootSmokePrefab, shotRespaw.transform.position, Quaternion.identity);
 
             Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
-            projectileRb.velocity = cannon.transform.TransformVector(new Vector3(0.0f, -magnitude, 0.0f));
+            projectileRb.velocity = cannon.transform.TransformVector(new Vector3(0.0f, magnitude, 0.0f));
         }
 	}
 }
