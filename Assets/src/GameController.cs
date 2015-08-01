@@ -94,7 +94,7 @@ public class GameController : MonoBehaviour {
 			Move();
 		}
         if (Input.GetKey(KeyCode.Escape))
-            ShotHit(currentPlayer);
+            ShotHit(enemyPlayer);
 
 	}
 
