@@ -57,7 +57,20 @@ public class PlayerController : MonoBehaviour
 				}
 
                 if (Input.GetKeyUp(KeyCode.I))
+                {
                     Debug.Log("cannon.transform.eulerAngles.x: " + cannon.transform.eulerAngles.x);
+                    Debug.Log("((cannon.transform.eulerAngles.x >= 0f) && (cannon.transform.eulerAngles.x <= 1f)): " + ((cannon.transform.eulerAngles.x >= 0f) && (cannon.transform.eulerAngles.x <= 1f)));
+                }
+
+                if (((cannon.transform.eulerAngles.x > 359f) && (cannon.transform.eulerAngles.x <= 360f)) ||
+                    ((cannon.transform.eulerAngles.x >= 0f) && (cannon.transform.eulerAngles.x <= 1f)))
+                    cannon.transform.eulerAngles = new Vector3(359f, cannon.transform.eulerAngles.y, cannon.transform.eulerAngles.z);
+                else if ((cannon.transform.eulerAngles.x < 320f))
+                {
+                    cannon.transform.eulerAngles = new Vector3(320f, cannon.transform.eulerAngles.y, cannon.transform.eulerAngles.z);
+                }
+                    
+
 			}
 		}
 	}
@@ -69,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
         this.transform.eulerAngles += new Vector3(0.0f, moveHorizontal, 0.0f);
 
-        //if (cannon.transform.eulerAngles.x >= 0 && cannon.transform.eulerAngles.x <= 320)
+        if (320f <= cannon.transform.eulerAngles.x && cannon.transform.eulerAngles.x <= 360f)
         	cannon.transform.eulerAngles -= new Vector3(moveVertical, 0.0f, 0.0f);
     }
 
