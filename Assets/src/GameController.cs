@@ -94,7 +94,7 @@ public class GameController : MonoBehaviour {
 			Move();
 		}
         if (Input.GetKey(KeyCode.Escape))
-            ShotHit(currentPlayer);
+            ShotHit(enemyPlayer);
 
 	}
 
@@ -175,6 +175,7 @@ public class GameController : MonoBehaviour {
 
     public void ShotHit(GameObject hit)
     {
+		Debug.Log("Hit " + hit.name);
         if (hit != null && hit.tag.Contains("Player"))
         {
             char winner = currentPlayerTag[currentPlayerTag.Length - 1];

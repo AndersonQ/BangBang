@@ -55,6 +55,16 @@ public class PlayerController : MonoBehaviour
 					Fire(magnitude);
 					shootImage.fillAmount = magnitude = 0f;
 				}
+
+                if (((cannon.transform.eulerAngles.x > 359f) && (cannon.transform.eulerAngles.x <= 360f)) ||
+                    ((cannon.transform.eulerAngles.x >= 0f) && (cannon.transform.eulerAngles.x <= 1f)))
+                    cannon.transform.eulerAngles = new Vector3(359f, cannon.transform.eulerAngles.y, cannon.transform.eulerAngles.z);
+                else if ((cannon.transform.eulerAngles.x < 320f))
+                {
+                    cannon.transform.eulerAngles = new Vector3(320f, cannon.transform.eulerAngles.y, cannon.transform.eulerAngles.z);
+                }
+                    
+
 			}
 		}
 	}
@@ -66,10 +76,8 @@ public class PlayerController : MonoBehaviour
 
         this.transform.eulerAngles += new Vector3(0.0f, moveHorizontal, 0.0f);
 
-		//Debug.Log("moveVertical: " + moveVertical);
-		if ((cannon.transform.eulerAngles.x < 63.5 || moveVertical > 0) &&
-		    (cannon.transform.eulerAngles.x > 26.5 || moveVertical < 0))
-        	cannon.transform.eulerAngles -= new Vector3(moveVertical, 0.0f, 0.0f);
+        if (320f <= cannon.transform.eulerAngles.x && cannon.transform.eulerAngles.x <= 360f)
+        	cannon.transform.eulerAngles -= new Vector3(-moveVertical, 0.0f, 0.0f);
     }
 
 	void Fire(float magnitude)
@@ -84,7 +92,7 @@ public class PlayerController : MonoBehaviour
             Instantiate(shootSmokePrefab, shotRespaw.transform.position, Quaternion.identity);
 
             Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
-            projectileRb.velocity = cannon.transform.TransformVector(new Vector3(0.0f, magnitude, 0.0f));
+            projectileRb.velocity = shotRespaw.transform.TransformVector(new Vector3(0.0f, magnitude, 0.0f));
         }
 	}
 }
