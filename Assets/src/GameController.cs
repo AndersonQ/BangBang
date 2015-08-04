@@ -55,6 +55,7 @@ public class GameController : MonoBehaviour {
 
         p1CannonCamera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
         p1CannonCamera.depth = freeFlyingCamera.depth + 1;
+		p1CannonCamera.GetComponent<AudioListener>().enabled = true;
 
         p2CannonCamera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
         p2CannonCamera.depth = freeFlyingCamera.depth + 1;
@@ -125,6 +126,9 @@ public class GameController : MonoBehaviour {
 
 	public void swapPlayers()
 	{
+		if (player1 == null)
+			return;
+
 		if (player1.CompareTag(currentPlayerTag)) 
         {
 			p1CameraPos = freeFlyingCamera.transform.position;
@@ -133,8 +137,10 @@ public class GameController : MonoBehaviour {
 			freeFlyingCamera.transform.position = p2CameraPos;
 			freeFlyingCamera.transform.rotation = p2CameraRot;
 
+			p1CannonCamera.GetComponent<AudioListener>().enabled = false;
             p1CannonCamera.enabled = false;
-            p2CannonCamera.enabled = true;
+			p2CannonCamera.enabled = true;
+			p2CannonCamera.GetComponent<AudioListener>().enabled = true;
 
             p1RotationX = rotationX;
             p1RotationY = rotationY;
@@ -155,8 +161,10 @@ public class GameController : MonoBehaviour {
 			freeFlyingCamera.transform.position = p1CameraPos;
 			freeFlyingCamera.transform.rotation = p1CameraRot;
 
+			p2CannonCamera.GetComponent<AudioListener>().enabled = false;
             p2CannonCamera.enabled = false;
             p1CannonCamera.enabled = true;
+			p1CannonCamera.GetComponent<AudioListener>().enabled = true;
 
             p2RotationX = rotationX;
             p2RotationY = rotationY;
@@ -175,7 +183,7 @@ public class GameController : MonoBehaviour {
 
     public void ShotHit(GameObject hit)
     {
-		Debug.Log("Hit " + hit.name);
+		Debug.Log("Hit " + hit.tag);
         if (hit != null && hit.tag.Contains("Player"))
         {
             char winner = currentPlayerTag[currentPlayerTag.Length - 1];
