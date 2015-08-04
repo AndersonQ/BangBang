@@ -126,7 +126,7 @@ public class GameController : MonoBehaviour {
 
 	public void swapPlayers()
 	{
-		if (player1 == null)
+		if (player1 == null || gameOver)
 			return;
 
 		if (player1.CompareTag(currentPlayerTag)) 
