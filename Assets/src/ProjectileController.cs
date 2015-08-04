@@ -35,8 +35,11 @@ public class ProjectileController : MonoBehaviour
 
     void LateUpdate()
     {
-        transform.LookAt(player.transform);
-        camera.transform.LookAt(player.transform);
+		if (player != null)
+		{
+	        transform.LookAt(player.transform);
+	        camera.transform.LookAt(player.transform);
+		}
     }
 
     void OnCollisionEnter(Collision other)
