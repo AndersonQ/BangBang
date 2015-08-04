@@ -183,7 +183,6 @@ public class GameController : MonoBehaviour {
 
     public void ShotHit(GameObject hit)
     {
-		Debug.Log("Hit " + hit.tag);
         if (hit != null && hit.tag.Contains("Player"))
         {
             char winner = currentPlayerTag[currentPlayerTag.Length - 1];
