@@ -33,13 +33,13 @@ public class GameController : MonoBehaviour {
 
 	int cameraThrust;
 
-    float p1RotationX;
-    float p2RotationX;
-    float p1RotationY;
-    float p2RotationY;
+    float p1CameraRotationX;
+	float p2CameraRotationX;
+	float p1CameraRotationY;
+	float p2CameraRotationY;
 
-	float rotationX;
-	float rotationY;
+	float camCurrentRotationX;
+	float amCurrentRotationY;
 
 	void Awake()
 	{
@@ -70,10 +70,10 @@ public class GameController : MonoBehaviour {
 	void Start()
 	{
 		cameraThrust = 1;
-		p1RotationX = rotationX = 50f;
-		p1RotationY = p2RotationY = rotationY = 0f;
+		p1CameraRotationX = camCurrentRotationX = 50f;
+		p1CameraRotationY = p2CameraRotationY = amCurrentRotationY = 0f;
 
-        p2RotationX = 225f;
+        p2CameraRotationX = 225f;
 
         p1CameraPos = 
             freeFlyingCamera.transform.position = 
@@ -116,12 +116,12 @@ public class GameController : MonoBehaviour {
 
 	void Rotate()
 	{
-		rotationX += Input.GetAxis("Mouse X");
-		rotationY += Input.GetAxis("Mouse Y");
-		rotationY = Mathf.Clamp (rotationY, -90, 90);
+		camCurrentRotationX += Input.GetAxis("Mouse X");
+		amCurrentRotationY += Input.GetAxis("Mouse Y");
+		amCurrentRotationY = Mathf.Clamp (amCurrentRotationY, -90, 90);
 			
-		freeFlyingCamera.transform.localRotation = Quaternion.AngleAxis(rotationX, Vector3.up);
-		freeFlyingCamera.transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);
+		freeFlyingCamera.transform.localRotation = Quaternion.AngleAxis(camCurrentRotationX, Vector3.up);
+		freeFlyingCamera.transform.localRotation *= Quaternion.AngleAxis(amCurrentRotationY, Vector3.left);
 	}
 
 	public void swapPlayers()
@@ -142,11 +142,11 @@ public class GameController : MonoBehaviour {
 			p2CannonCamera.enabled = true;
 			p2CannonCamera.GetComponent<AudioListener>().enabled = true;
 
-            p1RotationX = rotationX;
-            p1RotationY = rotationY;
+            p1CameraRotationX = camCurrentRotationX;
+            p1CameraRotationY = amCurrentRotationY;
 
-            rotationX = p2RotationX;
-            rotationY = p2RotationY;
+            camCurrentRotationX = p2CameraRotationX;
+            amCurrentRotationY = p2CameraRotationY;
 
 			currentPlayerTag = player2.tag;
             currentPlayer = player2;
@@ -166,11 +166,11 @@ public class GameController : MonoBehaviour {
             p1CannonCamera.enabled = true;
 			p1CannonCamera.GetComponent<AudioListener>().enabled = true;
 
-            p2RotationX = rotationX;
-            p2RotationY = rotationY;
+            p2CameraRotationX = camCurrentRotationX;
+            p2CameraRotationY = amCurrentRotationY;
 
-            rotationX = p1RotationX;
-            rotationY = p1RotationY;
+            camCurrentRotationX = p1CameraRotationX;
+            amCurrentRotationY = p1CameraRotationY;
 			
 			currentPlayerTag = player1.tag;
             currentPlayer = player1;
