@@ -3,7 +3,7 @@
 ![alt tag](http://forthebadge.com/images/badges/uses-badges.svg) ![alt tag](http://forthebadge.com/images/badges/built-by-developers.svg)  ![alt tag](http://forthebadge.com/images/badges/fuck-it-ship-it.svg)
 
 A cannon fight game created as final project to Introduction to Game Development at Universidade Federal do ABC - 2Q2015
-This game was inspirated by a old game Bang! Bang! made for windows.
+This game was inspirated by a old game called [Bang! Bang!](http://www.classicdosgames.com/game/Bang!_Bang!.html) made for windows.
 
 ##How to play
 ``w,a,s,d`` - I'll not insult your inteligence
