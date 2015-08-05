@@ -1,12 +1,8 @@
 # BangBang
 
-![alt tag](http://forthebadge.com/images/badges/uses-badges.svg)
+![alt tag](http://forthebadge.com/images/badges/uses-badges.svg) ![alt tag](http://forthebadge.com/images/badges/built-by-developers.svg)  ![alt tag](http://forthebadge.com/images/badges/fuck-it-ship-it.svg)
 
-![alt tag](http://forthebadge.com/images/badges/fuck-it-ship-it.svg)
-
-![alt tag](http://forthebadge.com/images/badges/built-by-developers.svg)
-
-A cannon fight game created as project to Introduction to Game Development at Universidade Federal do ABC - 2Q2015
+A cannon fight game created as final project to Introduction to Game Development at Universidade Federal do ABC - 2Q2015
 This game was inspirated by a old game Bang! Bang! made for windows.
 
 ##Installation
@@ -22,26 +18,31 @@ A binary version for all three platforms is available under the ``bin`` folder. 
 ```
 ├── Assets/
 │   │   ├── Animation/
-│   │   ├── Animation/
-│   │   ├── Animation/
-│   │   ├── Animation/
-│   │   ├── Animation/
+│   │   ├── Images/
+│   │   ├── Materials/
+│   │   ├── Prefabs/
+│   │   │   ├── PorglezompPyroclastics/ (Third part animated explosion from Unity asset store)
+│   │   │   ├── Smoke/ (Third part white smoke from Unity asset store)
+│   │   ├── Scenes/
+│   │   ├── Sounds/
+│   │   ├── Standard Assets/ (some Unit standard assets)
+│   │   ├── src/
 ├── ProjectSettings/
 ├── bin/
-│   │   ├── 00_Getting_Started.md
-│   │   ├── 01_Examples
-│   │   │   ├── 01_GitHub_Flavored_Markdown.md
-│   │   │   ├── 05_Code_Highlighting.md
-│   │   ├── 05_More_Examples
-│   │   │   ├── Hello_World.md
-│   │   │   ├── 05_Code_Highlighting.md
-│   ├── de
-│   │   ├── 00_Getting_Started.md
-│   │   ├── 01_Examples
-│   │   │   ├── 01_GitHub_Flavored_Markdown.md
-│   │   │   ├── 05_Code_Highlighting.md
-│   │   ├── 05_More_Examples
-│   │   │   ├── Hello_World.md
-│   │   │   ├── 05_Code_Highlighting.md
+│   │   ├── Linux/
+│   │   ├── Windows/
+│   │   ├── Mac/
 ```
+
+##How to play
+``w,a,s,d`` - I'll not insult your inteligence
+
+``space`` - Fire (hold it to charge)
+
+It's a turn based game for two players, like in the old days.
+The cannons do not "walk", you can only change it's pitch and yaw
+
+Wins who shoot the other player first (I bet you didn't know)
+
+
 
