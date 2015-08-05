@@ -6,7 +6,7 @@ A cannon fight game created as final project to Introduction to Game Development
 This game was inspirated by a old game called [Bang! Bang!](http://www.classicdosgames.com/game/Bang!_Bang!.html) made for windows.
 
 ##How to play
-``w,a,s,d`` - I'll not insult your inteligence
+``w,a,s,d and the arrows`` - I'll not insult your inteligence
 
 ``space`` - Fire (hold it to charge)
 
