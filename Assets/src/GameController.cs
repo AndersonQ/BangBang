@@ -246,14 +246,13 @@ public class GameController : MonoBehaviour {
             {
                 freeCameraCheatOn = !freeCameraCheatOn;
                 cheatIndex = 0;
-                Debug.Log("Free camera cheat " + freeCameraCheatOn);
             }
         }
     }
 
     private void prepareCheats()
     {
-        freeCameraCheat = new string[] { "i", "d", "c", "l", "i", "p"};//"idclip";
+        freeCameraCheat = new string[] { "i", "d", "c", "l", "i", "p"};
         freeCameraCheatOn = false;
 
         cheatIndex = 0;
