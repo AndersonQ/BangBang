@@ -26,12 +26,11 @@ public class ProjectileController : MonoBehaviour
     void Update()
     {
 		// Destroys the projectile if it gets out of the scenario
-        if (transform.position.y < 0)
+        if (transform.position.y < -10)
         {
             Destroy(this.gameObject);
             gameControllerScript.swapPlayers();
         }
-
     }
 
     void LateUpdate()
@@ -48,11 +47,11 @@ public class ProjectileController : MonoBehaviour
     {
         gameControllerScript.ShotHit(other.gameObject);
         Destroy(this.gameObject);
-        gameControllerScript.swapPlayers();
     }
 
     void OnDestroy()
     {
+        gameControllerScript.swapPlayers();
         gameControllerScript.setMainCameraEnable(true);
     }
 }
