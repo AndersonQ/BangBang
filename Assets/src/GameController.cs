@@ -60,6 +60,8 @@ public class GameController : MonoBehaviour {
         currentPlayer = player1;
         enemyPlayer = player2;
 
+        cameraThrust = 1;
+
         topCamera.rect = new Rect(0.015f, 0.01f, 0.215f, 0.215f);
         topCamera.depth = freeFlyingCamera.depth + 1;
 
@@ -79,26 +81,6 @@ public class GameController : MonoBehaviour {
         explosionSound = GetComponent<AudioSource>();
 
         prepareCheats();
-	}
-
-	void Start()
-	{
-		cameraThrust = 1;
-		p1CameraRotationX = camCurrentRotationX = 50f;
-		p1CameraRotationY = p2CameraRotationY = amCurrentRotationY = 0f;
-
-        p2CameraRotationX = 225f;
-
-        p1CameraPos = 
-            freeFlyingCamera.transform.position = 
-            new Vector3(-40f, 15f, -40);
-        p2CameraPos = new Vector3(40f, 15f, 40f);
-
-        p1CameraRot =
-            freeFlyingCamera.transform.rotation = 
-            Quaternion.Euler(10, 45, 0);
-        p2CameraRot = Quaternion.Euler(10, 225, 0);
-
 	}
 
 	void Update()
