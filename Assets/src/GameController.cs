@@ -41,6 +41,13 @@ public class GameController : MonoBehaviour {
 	float camCurrentRotationX;
 	float amCurrentRotationY;
 
+    string[] freeCameraCheat;
+    bool freeCameraCheatOn;
+
+    int cheatIndex;
+    float lastKeyPressedAt;
+    private float clearCheatAfterSeconds;
+
 	void Awake()
 	{
         gameOver = false;
@@ -65,6 +72,8 @@ public class GameController : MonoBehaviour {
         p2CannonCamera.enabled = false;
 
         explosionSound = GetComponent<AudioSource>();
+
+        prepareCheats();
 	}
 
 	void Start()
@@ -89,14 +98,17 @@ public class GameController : MonoBehaviour {
 
 	void Update()
 	{
-		if (Input.GetMouseButton (1)) 
+        if (Input.GetMouseButton(1) && freeCameraCheatOn) 
         {
 			Rotate();
 			Move();
 		}
+
+        // Debug only
         if (Input.GetKey(KeyCode.Escape))
             ShotHit(enemyPlayer);
 
+        updateCheat();
 	}
 
 	void Move()
@@ -218,5 +230,39 @@ public class GameController : MonoBehaviour {
     public void setMainCameraEnable(bool enable)
     {
         freeFlyingCamera.enabled = enable;
+    }
+
+    private void updateCheat()
+    {
+        if (Input.anyKey)
+            lastKeyPressedAt = Time.time;
+
+        if (Time.time - lastKeyPressedAt > clearCheatAfterSeconds)
+        {
+            cheatIndex = 0;
+            return;
+        }
+
+        if (Input.GetKeyUp(freeCameraCheat[cheatIndex]))
+        {
+            cheatIndex++;
+            if (cheatIndex == freeCameraCheat.Length)
+            {
+                freeCameraCheatOn = true;
+                cheatIndex = 0;
+            }
+
+            int index = cheatIndex > 0 ? cheatIndex : 1;
+            Debug.Log("Cheat: " + freeCameraCheat[index - 1]);
+        }
+    }
+
+    private void prepareCheats()
+    {
+        freeCameraCheat = new string[] { "i", "d", "c", "l", "i", "p"};//"idclip";
+        freeCameraCheatOn = false;
+
+        cheatIndex = 0;
+        clearCheatAfterSeconds = 1;
     }
 }
