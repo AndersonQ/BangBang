@@ -22,6 +22,13 @@ Just clone the master and build it on Unit3D 5.1. It's aimed to Linux, Windows a
 
 ###Binary
 A binary version for all three platforms is available under the ``bin`` folder. Just unzip, execute it and have fun :)
+Or grab below:
+
+* [Linux](https://github.com/AndersonQ/BangBang/blob/master/bin/Linux/BangBang.x86.rar)
+* [Linux x86_64](https://github.com/AndersonQ/BangBang/blob/master/bin/Linux/BangBang.x86_64.rar)
+* [Mac](https://github.com/AndersonQ/BangBang/blob/master/bin/Mac/BangBang.rar)
+* [Windows](https://github.com/AndersonQ/BangBang/blob/master/bin/Windows/BangBang.rar)
+* [Windows x86_64](https://github.com/AndersonQ/BangBang/blob/master/bin/Windows/BangBang_64bits.rar)
 
 ##Contributing
 Yes, you can contribute, clone it and have fun.
