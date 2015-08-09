@@ -9,6 +9,7 @@ public class GameOverManager : MonoBehaviour
     Animator animator;
     float restartTimer;
 
+
     void Awake()
     {
         gameController = GameObject.Find("GameController");
@@ -16,7 +17,6 @@ public class GameOverManager : MonoBehaviour
 
         animator = GetComponent<Animator>();
     }
-
 
     void Update()
     {
@@ -27,7 +27,12 @@ public class GameOverManager : MonoBehaviour
             restartTimer += Time.deltaTime;
 
             if (restartTimer >= restartDelay)
-                Application.LoadLevel(Application.loadedLevel);
+            {
+                int nextLevel = Application.loadedLevel + 1;
+                
+                nextLevel = nextLevel > 3 ? 0 : nextLevel;
+                Application.LoadLevel(nextLevel);
+            }
         }
     }
 }
