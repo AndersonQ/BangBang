@@ -5,21 +5,21 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
 	public GameObject projectilePrefab;
-	public GameObject cannon;
+	public GameObject movingCentre;
     public GameObject shotRespaw;
 	public GameObject explosionPrefab;
     public GameObject shootSmokePrefab;
 
-    public Image shootImage;
+    public Image shootMagnitudeIndicator;
 
     public bool shot;
     public float minMagnitude;
-    float magnitude = 0f;
-
+    
 	private GameObject gameController;
 	private GameController gameControllerScript;
     private AudioSource shootSound;
     private float shotAt;
+	private float magnitude = 0f;
 
 	//""
 	void Awake()
@@ -30,39 +30,37 @@ public class PlayerController : MonoBehaviour
 
         shot = false;
 
-        shootImage.fillAmount = 0f;
+        shootMagnitudeIndicator.fillAmount = 0f;
 	}
 
 	void Update()
 	{
+
+		// Does not move or fire if a mouse button is pressed or if it's not the player's turn
 		if (!Input.GetMouseButton (1) && 
 		    !Input.GetMouseButton (2) &&
 		    this.CompareTag(gameControllerScript.currentPlayerTag))
 		{
 			Move();
+
 			if (!shot)
 			{
+
 				if (Input.GetKeyDown(KeyCode.Space)) 
 					shotAt = Time.time;
-				
+				//Idicates it's charging to shoot
 				if (Input.GetKey(KeyCode.Space))
-					shootImage.fillAmount = ((Time.time - shotAt) * 0.3f) * 4;
-				
+					shootMagnitudeIndicator.fillAmount = ((Time.time - shotAt) * 0.3f) * 4;
+				//Do shoot
 				if (Input.GetKeyUp(KeyCode.Space))
 				{
 					magnitude = minMagnitude + ((Time.time - shotAt) * 30);
 					magnitude = (magnitude > 40f) ? 40f : magnitude;
 					Fire(magnitude);
-					shootImage.fillAmount = magnitude = 0f;
+					shootMagnitudeIndicator.fillAmount = magnitude = 0f;
 				}
 
-                if (((cannon.transform.eulerAngles.x > 359f) && (cannon.transform.eulerAngles.x <= 360f)) ||
-                    ((cannon.transform.eulerAngles.x >= 0f) && (cannon.transform.eulerAngles.x <= 1f)))
-                    cannon.transform.eulerAngles = new Vector3(359f, cannon.transform.eulerAngles.y, cannon.transform.eulerAngles.z);
-                else if ((cannon.transform.eulerAngles.x < 320f))
-                {
-                    cannon.transform.eulerAngles = new Vector3(320f, cannon.transform.eulerAngles.y, cannon.transform.eulerAngles.z);
-                }
+       
                     
 
 			}
@@ -76,8 +74,20 @@ public class PlayerController : MonoBehaviour
 
         this.transform.eulerAngles += new Vector3(0.0f, moveHorizontal, 0.0f);
 
-        if (320f <= cannon.transform.eulerAngles.x && cannon.transform.eulerAngles.x <= 360f)
-        	cannon.transform.eulerAngles -= new Vector3(-moveVertical, 0.0f, 0.0f);
+		//Limits the pitch range
+        if (320f <= movingCentre.transform.eulerAngles.x && movingCentre.transform.eulerAngles.x <= 360f)
+        	movingCentre.transform.eulerAngles -= new Vector3(-moveVertical, 0.0f, 0.0f);
+
+		//Put the pitch back to the allowed range
+		if (((movingCentre.transform.eulerAngles.x > 359f) && (movingCentre.transform.eulerAngles.x <= 360f)) ||
+		    ((movingCentre.transform.eulerAngles.x >= 0f) && (movingCentre.transform.eulerAngles.x <= 1f)))
+		{
+			movingCentre.transform.eulerAngles = new Vector3(359f, movingCentre.transform.eulerAngles.y, movingCentre.transform.eulerAngles.z);
+		}
+		else if ((movingCentre.transform.eulerAngles.x < 320f))
+		{
+			movingCentre.transform.eulerAngles = new Vector3(320f, movingCentre.transform.eulerAngles.y, movingCentre.transform.eulerAngles.z);
+		}
     }
 
 	void Fire(float magnitude)

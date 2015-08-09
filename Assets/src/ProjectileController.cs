@@ -7,7 +7,7 @@ public class ProjectileController : MonoBehaviour
     
     private GameObject gameController;
     private GameController gameControllerScript;
-    private GameObject player;
+	private GameObject enemyPlayer; //The projectile's target
 
     void Awake()
     {
@@ -19,35 +19,39 @@ public class ProjectileController : MonoBehaviour
 
     void Start()
     {
-        player = gameControllerScript.enemyPlayer;
-        camera.transform.LookAt(player.transform);
+        enemyPlayer = gameControllerScript.enemyPlayer;
+        camera.transform.LookAt(enemyPlayer.transform);
     }
 
     void Update()
     {
-        if (transform.position.y < 0)
+		// Destroys the projectile if it gets out of the scenario
+        if (transform.position.y < -10)
         {
             Destroy(this.gameObject);
             gameControllerScript.swapPlayers();
         }
-
     }
 
     void LateUpdate()
     {
-        transform.LookAt(player.transform);
-        camera.transform.LookAt(player.transform);
+		if (enemyPlayer != null)
+		{
+			// Camera always look to the enemy player
+	        transform.LookAt(enemyPlayer.transform);
+	        camera.transform.LookAt(enemyPlayer.transform);
+		}
     }
 
     void OnCollisionEnter(Collision other)
     {
         gameControllerScript.ShotHit(other.gameObject);
         Destroy(this.gameObject);
-        gameControllerScript.swapPlayers();
     }
 
     void OnDestroy()
     {
+        gameControllerScript.swapPlayers();
         gameControllerScript.setMainCameraEnable(true);
     }
 }

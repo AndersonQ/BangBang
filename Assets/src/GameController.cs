@@ -8,7 +8,9 @@ public class GameController : MonoBehaviour {
 
 	public Camera freeFlyingCamera;
 	public Camera topCamera;
+    public Camera p1Camera;
     public Camera p1CannonCamera;
+    public Camera p2Camera;
     public Camera p2CannonCamera;
 
 	public GameObject player1;
@@ -31,15 +33,23 @@ public class GameController : MonoBehaviour {
 	Quaternion p1CameraRot;
 	Quaternion p2CameraRot;
 
+    Camera mainCamera;
 	int cameraThrust;
 
-    float p1RotationX;
-    float p2RotationX;
-    float p1RotationY;
-    float p2RotationY;
+    float p1CameraRotationX;
+	float p2CameraRotationX;
+	float p1CameraRotationY;
+	float p2CameraRotationY;
 
-	float rotationX;
-	float rotationY;
+	float camCurrentRotationX;
+	float amCurrentRotationY;
+
+    string[] freeCameraCheat;
+    bool freeCameraCheatOn;
+
+    int cheatIndex;
+    float lastKeyPressedAt;
+    private float clearCheatAfterSeconds;
 
 	void Awake()
 	{
@@ -50,52 +60,47 @@ public class GameController : MonoBehaviour {
         currentPlayer = player1;
         enemyPlayer = player2;
 
+        cameraThrust = 1;
+
         topCamera.rect = new Rect(0.015f, 0.01f, 0.215f, 0.215f);
         topCamera.depth = freeFlyingCamera.depth + 1;
 
         p1CannonCamera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
         p1CannonCamera.depth = freeFlyingCamera.depth + 1;
+		p1CannonCamera.GetComponent<AudioListener>().enabled = true;
 
         p2CannonCamera.rect = new Rect(0.78f, 0.025f, 0.2f, 0.2f);
         p2CannonCamera.depth = freeFlyingCamera.depth + 1;
 
+        mainCamera = p1Camera;
         topCamera.enabled = true;
-        freeFlyingCamera.enabled = true;
+        p1Camera.enabled = true;
+        freeFlyingCamera.enabled = false;
         p2CannonCamera.enabled = false;
 
         explosionSound = GetComponent<AudioSource>();
-	}
 
-	void Start()
-	{
-		cameraThrust = 1;
-		p1RotationX = rotationX = 50f;
-		p1RotationY = p2RotationY = rotationY = 0f;
-
-        p2RotationX = 225f;
-
-        p1CameraPos = 
-            freeFlyingCamera.transform.position = 
-            new Vector3(-40f, 15f, -40);
-        p2CameraPos = new Vector3(40f, 15f, 40f);
-
-        p1CameraRot =
-            freeFlyingCamera.transform.rotation = 
-            Quaternion.Euler(10, 45, 0);
-        p2CameraRot = Quaternion.Euler(10, 225, 0);
-
+        prepareCheats();
 	}
 
 	void Update()
 	{
-		if (Input.GetMouseButton (1)) 
+        if (Input.GetMouseButton(1) && freeCameraCheatOn) 
         {
+            setMainCameraEnable(false);
+            freeFlyingCamera.enabled = true;
 			Rotate();
 			Move();
 		}
+
+        if (Input.GetMouseButtonUp(1))
+            setMainCameraEnable(true);
+
+        // Debug only
         if (Input.GetKey(KeyCode.Escape))
             ShotHit(enemyPlayer);
 
+        updateCheat();
 	}
 
 	void Move()
@@ -115,16 +120,19 @@ public class GameController : MonoBehaviour {
 
 	void Rotate()
 	{
-		rotationX += Input.GetAxis("Mouse X");
-		rotationY += Input.GetAxis("Mouse Y");
-		rotationY = Mathf.Clamp (rotationY, -90, 90);
+		camCurrentRotationX += Input.GetAxis("Mouse X");
+		amCurrentRotationY += Input.GetAxis("Mouse Y");
+		amCurrentRotationY = Mathf.Clamp (amCurrentRotationY, -90, 90);
 			
-		freeFlyingCamera.transform.localRotation = Quaternion.AngleAxis(rotationX, Vector3.up);
-		freeFlyingCamera.transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);
+		freeFlyingCamera.transform.localRotation = Quaternion.AngleAxis(camCurrentRotationX, Vector3.up);
+		freeFlyingCamera.transform.localRotation *= Quaternion.AngleAxis(amCurrentRotationY, Vector3.left);
 	}
 
 	public void swapPlayers()
 	{
+        if (player1 == null || player2 == null || gameOver)
+			return;
+
 		if (player1.CompareTag(currentPlayerTag)) 
         {
 			p1CameraPos = freeFlyingCamera.transform.position;
@@ -133,14 +141,18 @@ public class GameController : MonoBehaviour {
 			freeFlyingCamera.transform.position = p2CameraPos;
 			freeFlyingCamera.transform.rotation = p2CameraRot;
 
+			p1CannonCamera.GetComponent<AudioListener>().enabled = false;
             p1CannonCamera.enabled = false;
-            p2CannonCamera.enabled = true;
+			p2CannonCamera.enabled = true;
+			p2CannonCamera.GetComponent<AudioListener>().enabled = true;
 
-            p1RotationX = rotationX;
-            p1RotationY = rotationY;
+            p1CameraRotationX = camCurrentRotationX;
+            p1CameraRotationY = amCurrentRotationY;
 
-            rotationX = p2RotationX;
-            rotationY = p2RotationY;
+            camCurrentRotationX = p2CameraRotationX;
+            amCurrentRotationY = p2CameraRotationY;
+
+            mainCamera = p2Camera;
 
 			currentPlayerTag = player2.tag;
             currentPlayer = player2;
@@ -155,15 +167,19 @@ public class GameController : MonoBehaviour {
 			freeFlyingCamera.transform.position = p1CameraPos;
 			freeFlyingCamera.transform.rotation = p1CameraRot;
 
+			p2CannonCamera.GetComponent<AudioListener>().enabled = false;
             p2CannonCamera.enabled = false;
             p1CannonCamera.enabled = true;
+			p1CannonCamera.GetComponent<AudioListener>().enabled = true;
 
-            p2RotationX = rotationX;
-            p2RotationY = rotationY;
+            p2CameraRotationX = camCurrentRotationX;
+            p2CameraRotationY = amCurrentRotationY;
 
-            rotationX = p1RotationX;
-            rotationY = p1RotationY;
-			
+            camCurrentRotationX = p1CameraRotationX;
+            amCurrentRotationY = p1CameraRotationY;
+
+            mainCamera = p1Camera;
+
 			currentPlayerTag = player1.tag;
             currentPlayer = player1;
             enemyPlayer = player2;
@@ -175,7 +191,6 @@ public class GameController : MonoBehaviour {
 
     public void ShotHit(GameObject hit)
     {
-		Debug.Log("Hit " + hit.name);
         if (hit != null && hit.tag.Contains("Player"))
         {
             char winner = currentPlayerTag[currentPlayerTag.Length - 1];
@@ -210,6 +225,37 @@ public class GameController : MonoBehaviour {
 
     public void setMainCameraEnable(bool enable)
     {
-        freeFlyingCamera.enabled = enable;
+        mainCamera.enabled = enable;
+    }
+
+    private void updateCheat()
+    {
+        if (Input.anyKey)
+            lastKeyPressedAt = Time.time;
+
+        if (Time.time - lastKeyPressedAt > clearCheatAfterSeconds)
+        {
+            cheatIndex = 0;
+            return;
+        }
+
+        if (Input.GetKeyUp(freeCameraCheat[cheatIndex]))
+        {
+            cheatIndex++;
+            if (cheatIndex == freeCameraCheat.Length)
+            {
+                freeCameraCheatOn = !freeCameraCheatOn;
+                cheatIndex = 0;
+            }
+        }
+    }
+
+    private void prepareCheats()
+    {
+        freeCameraCheat = new string[] { "i", "d", "c", "l", "i", "p"};
+        freeCameraCheatOn = false;
+
+        cheatIndex = 0;
+        clearCheatAfterSeconds = 1;
     }
 }
