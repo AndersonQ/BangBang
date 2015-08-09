@@ -21,8 +21,7 @@ Wins who shoot the other player first (I bet you didn't know)
 Just clone the master and build it on Unit3D 5.1. It's aimed to Linux, Windows and Mac
 
 ###Binary
-A binary version for all three platforms is available under the ``bin`` folder. Just unzip, execute it and have fun :)
-Or grab below:
+A binary version for all three platforms is available under the ``bin`` folder. Just unzip, execute it and have fun, or grab it below :)
 
 * [Linux](https://github.com/AndersonQ/BangBang/blob/master/bin/Linux/BangBang.x86.rar)
 * [Linux x86_64](https://github.com/AndersonQ/BangBang/blob/master/bin/Linux/BangBang.x86_64.rar)
